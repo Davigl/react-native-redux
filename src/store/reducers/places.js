@@ -15,14 +15,34 @@ const reducer = (state = initialState, action) => {
     case ADD_PLACE:
       return {
         ...state,
-        places: prevState.places.concat({
+        places: state.places.concat({
           key: Math.random(),
-          name: placeName,
+          name: action.placeName,
           image: {
             uri:
               "https://img.theculturetrip.com/x/smart/wp-content/uploads/2019/04/shutterstock_421013719.jpg"
           }
         })
+      };
+    case DELETE_PLACE:
+      return {
+        ...state,
+        places: state.places.filter(place => {
+          return place.key !== state.selectedPlace.key;
+        }),
+        selectedPlace: null
+      };
+    case SELECT_PLACE:
+      return {
+        ...state,
+        selectedPlace: state.places.find(place => {
+          return place.key === action.placeKey;
+        })
+      };
+    case DESELECT_PLACE:
+      return {
+        ...state,
+        selectedPlace: null
       };
     default:
       return state;
